@@ -109,8 +109,8 @@ describe('findAndDeleteExpiredPing', () => {
     const mergedObj: mergedObject = {
       aka: [{ record: { userID: 'lol' }, lastPing: validLastPing }],
       es_name: [
-        { record: { userID: 'lol' }, lastPing: validLastPing },
-        { record: { userID: 'lol' }, lastPing: validLastPing },
+        { record: { userID: 'lol1' }, lastPing: validLastPing },
+        { record: { userID: 'lol2' }, lastPing: validLastPing },
       ],
       identifiers: {
         personalNumber: '',
@@ -126,8 +126,8 @@ describe('findAndDeleteExpiredPing', () => {
     const expectedMergedObject: mergedObject = {
       aka: [{ record: { userID: 'lol' }, lastPing: validLastPing }],
       es_name: [
-        { record: { userID: 'lol' }, lastPing: validLastPing },
-        { record: { userID: 'lol' }, lastPing: validLastPing },
+        { record: { userID: 'lol1' }, lastPing: validLastPing },
+        { record: { userID: 'lol2' }, lastPing: validLastPing },
       ],
       identifiers: {
         personalNumber: '',
