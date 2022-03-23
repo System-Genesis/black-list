@@ -1,5 +1,5 @@
 type mergedObject = {
-  _id: string;
+  _id?: string;
   aka?: any[];
   es_name?: any[];
   sf_name?: any[];

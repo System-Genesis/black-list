@@ -18,8 +18,8 @@ export const dailyAction = async (): Promise<void> => {
   logger.info(true, 'APP', 'Delete finished successfully', `deleted ${count} records`, count);
 };
 
-async function handleDelete(mergedObj: mergedObj) {
-  const recordsToKill: record[] = findExpiredPing(mergedObj);
+export async function handleDelete(mergedObj: mergedObj) {
+  const recordsToKill: record[] = findAndDeleteExpiredPing(mergedObj);
   await repo.handleChangedObj(mergedObj);
 
   sendToSelectorQueue(mergedObj);
@@ -30,7 +30,12 @@ async function handleDelete(mergedObj: mergedObj) {
   }
 }
 
-const findExpiredPing = (mergedObj: mergedObj) => {
+/**
+ * Deletes the records of the merged object that their last ping is expired. Deleted a source's array if empty after deleting the records
+ * @param mergedObj - The current merged object
+ * @returns Array of the deleted records
+ */
+export const findAndDeleteExpiredPing = (mergedObj: mergedObj) => {
   let oldRecords: record[] = [];
   const dateBefore = expiredDate();
 
