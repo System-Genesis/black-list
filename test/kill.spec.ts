@@ -2,14 +2,8 @@ import { findAndDeleteExpiredPing } from '../src/kill';
 import mergedObject from '../src/types/mergedObject';
 import { record } from '../src/types/recordType';
 
-jest.mock('logger-genesis');
-
-const dateFromDaysNumber = (days: number): Date => {
-  return new Date(new Date().setDate(new Date().getDate() - days));
-};
-
-const validLastPing = dateFromDaysNumber(2);
-const expiredLastPing = dateFromDaysNumber(40);
+const validLastPing = new Date(new Date().setDate(new Date().getDate() - 2));
+const expiredLastPing = new Date(new Date().setDate(new Date().getDate() - 40));
 
 describe('findAndDeleteExpiredPing', () => {
   test('Remove source', () => {
