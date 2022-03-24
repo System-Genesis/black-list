@@ -47,6 +47,7 @@ export const findAndDeleteExpiredPing = (mergedObj: mergedObj) => {
   const dateBefore = expiredDate();
 
   Object.keys(mergedObj).forEach((source) => {
+    // TODO (N): config sources to able to delete from
     if (config.sources.includes(source))
       mergedObj[source] = mergedObj[source].filter((rec: { lastPing: Date; record: record }) => {
         if (new Date(rec.lastPing) < dateBefore) {
@@ -55,12 +56,10 @@ export const findAndDeleteExpiredPing = (mergedObj: mergedObj) => {
             true,
             'APP',
             'Record in merged object deleted',
-            `The record with userID: ${rec.record.userID} from source: ${
-              rec.record.source
-            } deleted from entity with identifier ${
-              mergedObj.identifiers.personalNumber ||
-              mergedObj.identifiers.identityCard ||
-              mergedObj.identifiers.goalUserId
+            `The record with userID: ${rec.record.userID} from source: ${rec.record.source
+            } deleted from entity with identifier ${mergedObj.identifiers.personalNumber ||
+            mergedObj.identifiers.identityCard ||
+            mergedObj.identifiers.goalUserId
             }`,
             { identifiers: mergedObj.identifiers }
           );
