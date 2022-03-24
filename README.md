@@ -1,1 +1,1 @@
-service responsibility is to kill useless people (שבק סתם צוחק לא באמת)
+service responsibility is to get rid of the black list
