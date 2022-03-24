@@ -23,6 +23,8 @@ export async function handleDelete(mergedObj: mergedObj) {
   await repo.handleChangedObj(mergedObj);
 
   sendToSelectorQueue(mergedObj);
+
+  //TODO: move to findAndDeleteExpiredPing function
   for (let i = 0; i < recordsToKill.length; i++) {
     if (recordsToKill[i].userID) {
       sendToCreateQueue(recordsToKill[i].userID!);
@@ -40,9 +42,13 @@ export const findAndDeleteExpiredPing = (mergedObj: mergedObj) => {
   const dateBefore = expiredDate();
 
   Object.keys(mergedObj).forEach((source) => {
+    // TODO: if (config.sources.includes(source))
     if (source !== 'identifiers' && source !== '_id' && Array.isArray(mergedObj[source]))
+
+      // TODO: Think about deleting Aka    
       mergedObj[source] = mergedObj[source].filter((rec: { lastPing: Date; record: record }) => {
         if (new Date(rec.lastPing) < dateBefore) {
+          // TODO: Log for deleted record
           oldRecords.push(rec.record);
           return false;
         }

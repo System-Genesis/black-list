@@ -13,6 +13,7 @@ const getExpiredLastPing = (date: Date): mongoose.QueryCursor<mergedObj> => {
 };
 
 const handleChangedObj = async (updatedObj: mergedObj) => {
+  // TODO: Think about deleting the object
   if (hasSources(updatedObj)) {
     await mergedObjModel.findOneAndReplace({ _id: updatedObj._id }, updatedObj);
   } else {
