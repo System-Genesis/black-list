@@ -22,5 +22,5 @@ export default {
   serviceName: env.get('SERVICE_NAME').required().asString(),
   daysBefore: env.get('DAYS_BEFORE').required().asInt(),
   hourSchedule: env.get('HOUR_SCHEDULE').required().asInt(),
-  sources: env.get('SOURCES').required().asArray(),
+  sourceAbleToDelete: env.get('SOURCES').required().asArray(),
 };

@@ -47,7 +47,7 @@ export const findAndDeleteExpiredPing = (mergedObj: mergedObj) => {
   const dateBefore = expiredDate();
 
   Object.keys(mergedObj).forEach((source) => {
-    if (config.sources.includes(source))
+    if (config.sourceAbleToDelete.includes(source))
       mergedObj[source] = mergedObj[source].filter((rec: { lastPing: Date; record: record }) => {
         if (new Date(rec.lastPing) < dateBefore) {
           oldRecords.push(rec.record);

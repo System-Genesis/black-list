@@ -10,7 +10,7 @@ import mergedObj from '../types/mergedObject';
  */
 const getExpiredLastPing = (date: Date): mongoose.QueryCursor<mergedObj> => {
   // Create a array of conditions for an $or mongo query
-  const cond = config.sources.map((source) => {
+  const cond = config.sourceAbleToDelete.map((source) => {
     return { [`${source}.lastPing`]: { $lt: date } };
   });
 
