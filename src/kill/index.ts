@@ -52,6 +52,7 @@ export const findAndDeleteExpiredPing = (mergedObj: mergedObj) => {
       mergedObj[source] = mergedObj[source].filter((rec: { lastPing: Date; record: record }) => {
         if (new Date(rec.lastPing) < dateBefore) {
           oldRecords.push(rec.record);
+          // TODO (N): parse logs identifier in a function (?)
           logger.info(
             true,
             'APP',
