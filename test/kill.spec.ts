@@ -2,13 +2,15 @@ import { findAndDeleteExpiredPing } from '../src/kill';
 import mergedObject from '../src/types/mergedObject';
 import { record } from '../src/types/recordType';
 
+jest.mock('logger-genesis');
+
 const validLastPing = new Date(new Date().setDate(new Date().getDate() - 2));
 const expiredLastPing = new Date(new Date().setDate(new Date().getDate() - 40));
 
 describe('findAndDeleteExpiredPing', () => {
   test('Remove source', () => {
     const mergedObj: mergedObject = {
-      aka: [{ record: { userID: 'lol' }, lastPing: validLastPing }],
+      sf_name: [{ record: { userID: 'lol' }, lastPing: validLastPing }],
       es_name: [{ record: { userID: 'lol1' }, lastPing: expiredLastPing }],
       _id: '',
       identifiers: {
@@ -23,7 +25,7 @@ describe('findAndDeleteExpiredPing', () => {
 
     const expectedDIsToDelete: record[] = [{ userID: 'lol1' }];
     const expectedMergedObject: mergedObject = {
-      aka: [{ record: { userID: 'lol' }, lastPing: validLastPing }],
+      sf_name: [{ record: { userID: 'lol' }, lastPing: validLastPing }],
       identifiers: {
         personalNumber: '',
         identityCard: '',
@@ -38,7 +40,7 @@ describe('findAndDeleteExpiredPing', () => {
 
   test('Remove source and a record from source array', () => {
     const mergedObj: mergedObject = {
-      aka: [{ record: { userID: 'lol' }, lastPing: expiredLastPing }],
+      sf_name: [{ record: { userID: 'lol' }, lastPing: expiredLastPing }],
       es_name: [
         { record: { userID: 'lol1' }, lastPing: expiredLastPing },
         { record: { userID: 'lol2' }, lastPing: validLastPing },
@@ -70,7 +72,7 @@ describe('findAndDeleteExpiredPing', () => {
 
   test('Delete all records', () => {
     const mergedObj: mergedObject = {
-      aka: [{ record: { userID: 'lol' }, lastPing: expiredLastPing }],
+      sf_name: [{ record: { userID: 'lol' }, lastPing: expiredLastPing }],
       es_name: [
         { record: { userID: 'lol1' }, lastPing: expiredLastPing },
         { record: { userID: 'lol2' }, lastPing: expiredLastPing },
@@ -85,7 +87,11 @@ describe('findAndDeleteExpiredPing', () => {
 
     const DIsToDelete: record[] = findAndDeleteExpiredPing(mergedObj);
 
-    const expectedDIsToDelete: record[] = [{ userID: 'lol' }, { userID: 'lol1' }, { userID: 'lol2' }];
+    const expectedDIsToDelete: record[] = [
+      { userID: 'lol' },
+      { userID: 'lol1' },
+      { userID: 'lol2' },
+    ];
     const expectedMergedObject: mergedObject = {
       identifiers: {
         personalNumber: '',
@@ -101,7 +107,7 @@ describe('findAndDeleteExpiredPing', () => {
 
   test('No record needs to be deleted', () => {
     const mergedObj: mergedObject = {
-      aka: [{ record: { userID: 'lol' }, lastPing: validLastPing }],
+      sf_name: [{ record: { userID: 'lol' }, lastPing: validLastPing }],
       es_name: [
         { record: { userID: 'lol1' }, lastPing: validLastPing },
         { record: { userID: 'lol2' }, lastPing: validLastPing },
@@ -118,7 +124,7 @@ describe('findAndDeleteExpiredPing', () => {
 
     const expectedDIsToDelete: record[] = [];
     const expectedMergedObject: mergedObject = {
-      aka: [{ record: { userID: 'lol' }, lastPing: validLastPing }],
+      sf_name: [{ record: { userID: 'lol' }, lastPing: validLastPing }],
       es_name: [
         { record: { userID: 'lol1' }, lastPing: validLastPing },
         { record: { userID: 'lol2' }, lastPing: validLastPing },

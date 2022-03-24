@@ -45,9 +45,10 @@ export async function handleDelete(mergedObj: mergedObj) {
 export const findAndDeleteExpiredPing = (mergedObj: mergedObj) => {
   let oldRecords: record[] = [];
   const dateBefore = expiredDate();
+  const sourceAbleToDelete = config.sourceAbleToDelete;
 
   Object.keys(mergedObj).forEach((source) => {
-    if (config.sourceAbleToDelete.includes(source))
+    if (sourceAbleToDelete.includes(source))
       mergedObj[source] = mergedObj[source].filter((rec: { lastPing: Date; record: record }) => {
         if (new Date(rec.lastPing) < dateBefore) {
           oldRecords.push(rec.record);
