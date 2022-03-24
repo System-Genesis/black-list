@@ -1,3 +1,4 @@
 export type record = {
-  userID?: string;
+  userID: string;
+  source?: string;
 };

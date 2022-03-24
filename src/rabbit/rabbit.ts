@@ -1,10 +1,12 @@
 import logger from 'logger-genesis';
 import menash from 'menashmq';
 import config from '../config/env.config';
-import logObject from '../types/log';
 import mergedObjectType from '../types/mergedObject';
 
-export const connectRabbit = async () => {
+/**
+ * Initialized the connection to rabbit, declares the queues
+ */
+export const initializeRabbit = async () => {
   try {
     console.log('Try connect to Rabbit');
 
@@ -19,10 +21,10 @@ export const connectRabbit = async () => {
   }
 };
 
-export const sendToLogQueue = (logToSend: logObject): void => {
-  menash.send(config.rabbit.logQueue, logToSend, { persistent: true });
-};
-
+/**
+ * Sends the given merged object to Selector
+ * @param mergedObject - The updated merged object
+ */
 export const sendToSelectorQueue = (mergedObject: mergedObjectType): void => {
   logger.info(
     false,
@@ -33,6 +35,10 @@ export const sendToSelectorQueue = (mergedObject: mergedObjectType): void => {
   menash.send(config.rabbit.selectorQueue, mergedObject, { persistent: true });
 };
 
+/**
+ * Sends to CreateRGBE a uniqueID of a DI to delete
+ * @param userId - The uniqueID for the DI that has to be deleted
+ */
 export const sendToCreateQueue = (userId: string): void => {
   logger.info(
     false,
@@ -43,4 +49,4 @@ export const sendToCreateQueue = (userId: string): void => {
   menash.send(config.rabbit.createQueue, { userId }, { persistent: true });
 };
 
-export default { connectRabbit };
+export default { initializeRabbit };

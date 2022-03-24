@@ -6,7 +6,11 @@ import { sendToSelectorQueue } from '../rabbit/rabbit';
 import mergedObj from '../types/mergedObject';
 import { record } from '../types/recordType';
 import { getDateFrom as expiredDate } from '../utils/utils';
+import config from '../config/env.config';
 
+/**
+ * The main function of the daily run.
+ */
 export const dailyAction = async (): Promise<void> => {
   const streamProvider: QueryCursor<mergedObj> = repo.getExpiredLastPing(expiredDate());
   let count = 0;
@@ -18,18 +22,19 @@ export const dailyAction = async (): Promise<void> => {
   logger.info(true, 'APP', 'Delete finished successfully', `deleted ${count} records`, count);
 };
 
+/**
+ * Handles the delete flow. Finds all the records of the merged object that has to be deleted.
+ * Updates in the mongo and sends the relevant information to Selector and CreateRGBE
+ * @param mergedObj - The merged object that contains an record with expired lastPing
+ */
 export async function handleDelete(mergedObj: mergedObj) {
   const recordsToKill: record[] = findAndDeleteExpiredPing(mergedObj);
-  await repo.handleChangedObj(mergedObj);
+  await repo.updateDocument(mergedObj);
 
   sendToSelectorQueue(mergedObj);
 
-  //TODO: move to findAndDeleteExpiredPing function
-  for (let i = 0; i < recordsToKill.length; i++) {
-    if (recordsToKill[i].userID) {
-      sendToCreateQueue(recordsToKill[i].userID!);
-    }
-  }
+  //TODO: Think about moving to findAndDeleteExpiredPing function
+  recordsToKill.forEach((record) => sendToCreateQueue(record.userID));
 }
 
 /**
@@ -42,14 +47,23 @@ export const findAndDeleteExpiredPing = (mergedObj: mergedObj) => {
   const dateBefore = expiredDate();
 
   Object.keys(mergedObj).forEach((source) => {
-    // TODO: if (config.sources.includes(source))
-    if (source !== 'identifiers' && source !== '_id' && Array.isArray(mergedObj[source]))
-
-      // TODO: Think about deleting Aka    
+    if (config.sources.includes(source))
       mergedObj[source] = mergedObj[source].filter((rec: { lastPing: Date; record: record }) => {
         if (new Date(rec.lastPing) < dateBefore) {
-          // TODO: Log for deleted record
           oldRecords.push(rec.record);
+          logger.info(
+            true,
+            'APP',
+            'Record in merged object deleted',
+            `The record with userID: ${rec.record.userID} from source: ${
+              rec.record.source
+            } deleted from entity with identifier ${
+              mergedObj.identifiers.personalNumber ||
+              mergedObj.identifiers.identityCard ||
+              mergedObj.identifiers.goalUserId
+            }`,
+            { identifiers: mergedObj.identifiers }
+          );
           return false;
         }
         return true;

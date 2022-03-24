@@ -4,6 +4,9 @@ import config from '../config/env.config';
 
 const { mongo } = config;
 
+/**
+ * Initializes the connection to mongo via mongoose
+ */
 export default async () => {
   logger.info(false, 'SYSTEM', 'Connecting to Mongo', 'Connecting to Mongo');
 

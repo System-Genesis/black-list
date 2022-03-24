@@ -4,15 +4,15 @@ import config from './config/env.config';
 import { dailyAction } from './kill';
 import { initializeLogger } from './logger/logger';
 import initializeMongo from './mongo/initializeMongo';
-import { connectRabbit } from './rabbit/rabbit';
+import { initializeRabbit } from './rabbit/rabbit';
 
 (async () => {
-  await connectRabbit();
+  await initializeRabbit();
   await initializeLogger();
   await initializeMongo();
-  dailyAction();
+
   schedule.scheduleJob({ hour: config.hourSchedule }, () => {
-    logger.info(true, 'SYSTEM', 'Daily run', `start Daily run`);
+    logger.info(true, 'SYSTEM', 'Daily run', `Starts Daily run`);
     dailyAction();
   });
 })();
