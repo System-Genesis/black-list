@@ -15,7 +15,7 @@ export const dailyAction = async (): Promise<void> => {
   const streamProvider: QueryCursor<mergedObj> = repo.getExpiredLastPing(expiredDate());
   let count = 0;
   for (let doc = await streamProvider.next(); doc != null; doc = await streamProvider.next()) {
-    handleDelete(doc);
+    await handleDelete(doc);
     count += 1;
   }
 
