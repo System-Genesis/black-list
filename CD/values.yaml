@@ -1,10 +1,10 @@
-name: 'kill'
+name: 'black-list'
 replicaCount: 1
 
 images:
   PullSecrets:
     name: kartoffelreg
-  repository: genesisproject.azurecr.io/kill
+  repository: genesisproject.azurecr.io/black-list
   tag: 'latest'
 
 service:
@@ -15,4 +15,4 @@ service:
 
 config:
   configmaps:
-    name: kill
+    name: black-list
