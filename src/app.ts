@@ -11,8 +11,11 @@ import { initializeRabbit } from './rabbit/rabbit';
   await initializeLogger();
   await initializeMongo();
 
+  dailyAction();
+
   schedule.scheduleJob({ hour: config.hourSchedule }, () => {
     logger.info(true, 'SYSTEM', 'Daily run', `Starts Daily run`);
     dailyAction();
   });
+  
 })();

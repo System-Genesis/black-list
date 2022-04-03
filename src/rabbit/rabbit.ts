@@ -46,7 +46,7 @@ export const sendToCreateQueue = (userId: string): void => {
     'Sending DI to create queue for delete',
     `Sending DI to create to delete with uniqueId ${userId}`
   );
-  menash.send(config.rabbit.createQueue, { userId }, { persistent: true });
+  menash.send(config.rabbit.createQueue, userId, { persistent: true });
 };
 
 export default { initializeRabbit };

@@ -7,8 +7,8 @@
     "build": "tsc",
     "start": "nodemon ./src/app.ts",
     "test": "jest --coverage",
-    "docker-dockerhub": "docker build -t systemgenesis0/kill . && docker push systemgenesis0/kill",
-    "docker-azure": "docker build -t genesisproject.azurecr.io/system-genesis/kill:latest . && docker push genesisproject.azurecr.io/system-genesis/kill:latest "
+    "docker-dockerhub": "docker build -t systemgenesis0/black_list . && docker push systemgenesis0/black_list",
+    "docker-azure": "docker build -t genesisproject.azurecr.io/system-genesis/black_list:latest . && docker push genesisproject.azurecr.io/system-genesis/black_list:latest "
   },
   "repository": {
     "type": "git",
