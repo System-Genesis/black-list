@@ -17,4 +17,5 @@ import { initializeRabbit } from './rabbit/rabbit';
     logger.info(true, 'SYSTEM', 'Daily run', `Starts Daily run`);
     dailyAction();
   });
+  
 })();
