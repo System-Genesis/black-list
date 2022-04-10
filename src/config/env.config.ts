@@ -23,4 +23,5 @@ export default {
   daysBefore: env.get('DAYS_BEFORE').required().asInt(),
   hourSchedule: env.get('HOUR_SCHEDULE').required().asInt(),
   sourceAbleToDelete: env.get('SOURCES').required().asArray(),
+  port: env.get('PORT').required().asInt(),
 };
