@@ -1,5 +1,4 @@
 import { sendToCreateQueue } from './../rabbit/rabbit';
-import logger from 'logger-genesis';
 import { QueryCursor } from 'mongoose';
 import repo from '../mongo/repo';
 import { sendToSelectorQueue } from '../rabbit/rabbit';
@@ -7,6 +6,7 @@ import mergedObj from '../types/mergedObject';
 import { record } from '../types/recordType';
 import { getDateFrom as expiredDate } from '../utils/utils';
 import config from '../config/env.config';
+import logs from '../logger/logs';
 
 /**
  * The main function of the daily run.
@@ -19,7 +19,7 @@ export const dailyAction = async (): Promise<void> => {
     count += 1;
   }
 
-  logger.info(true, 'APP', 'Delete finished successfully', `deleted ${count} records`, count);
+  logs.DELETE_COUNT(count);
 };
 
 /**
@@ -52,19 +52,8 @@ export const findAndDeleteExpiredPing = (mergedObj: mergedObj) => {
       mergedObj[source] = mergedObj[source].filter((rec: { lastPing: Date; record: record }) => {
         if (new Date(rec.lastPing) < dateBefore) {
           oldRecords.push(rec.record);
-          logger.info(
-            true,
-            'APP',
-            'Record in merged object deleted',
-            `The record with userID: ${rec.record.userID} from source: ${
-              rec.record.source
-            } deleted from entity with identifier ${
-              mergedObj.identifiers.personalNumber ||
-              mergedObj.identifiers.identityCard ||
-              mergedObj.identifiers.goalUserId
-            }`,
-            { identifiers: mergedObj.identifiers }
-          );
+          logs.DELETED(rec.record.userID, rec.record.source!, mergedObj.identifiers);
+
           return false;
         }
         return true;

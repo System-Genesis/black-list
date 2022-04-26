@@ -1,9 +1,9 @@
-import logger from 'logger-genesis';
 import schedule from 'node-schedule';
 import config from './config/env.config';
 import initializeHttp from './http/app';
 import { dailyAction } from './kill';
 import { initializeLogger } from './logger/logger';
+import logs from './logger/logs';
 import initializeMongo from './mongo/initializeMongo';
 import { initializeRabbit } from './rabbit/rabbit';
 
@@ -16,7 +16,7 @@ import { initializeRabbit } from './rabbit/rabbit';
   dailyAction();
 
   schedule.scheduleJob({ hour: config.hourSchedule }, () => {
-    logger.info(true, 'SYSTEM', 'Daily run', `Starts Daily run`);
+    logs.DAILY_START();
     dailyAction();
   });
 })();

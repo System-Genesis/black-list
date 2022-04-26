@@ -1,6 +1,7 @@
 import logger from 'logger-genesis';
 import menash from 'menashmq';
 import config from '../config/env.config';
+import logs from '../logger/logs';
 import mergedObjectType from '../types/mergedObject';
 
 /**
@@ -26,12 +27,8 @@ export const initializeRabbit = async () => {
  * @param mergedObject - The updated merged object
  */
 export const sendToSelectorQueue = (mergedObject: mergedObjectType): void => {
-  logger.info(
-    false,
-    'APP',
-    'Sending object to selector queue',
-    `Sending merged object to selector with identifiers${JSON.stringify(mergedObject.identifiers)}`
-  );
+  logs.SEND_TO_QUEUE('SELECTOR', `Sending merged object to selector with identifiers`, mergedObject.identifiers);
+
   menash.send(config.rabbit.selectorQueue, mergedObject, { persistent: true });
 };
 
@@ -40,12 +37,8 @@ export const sendToSelectorQueue = (mergedObject: mergedObjectType): void => {
  * @param userId - The uniqueID for the DI that has to be deleted
  */
 export const sendToCreateQueue = (userId: string): void => {
-  logger.info(
-    false,
-    'APP',
-    'Sending DI to create queue for delete',
-    `Sending DI to create to delete with uniqueId ${userId}`
-  );
+  logs.SEND_TO_QUEUE('create', `Sending DI to create to delete with 'uniqueId' `, { userId });
+
   menash.send(config.rabbit.createQueue, userId, { persistent: true });
 };
 
