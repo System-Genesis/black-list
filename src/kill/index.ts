@@ -34,7 +34,7 @@ export async function handleDelete(mergedObj: mergedObj) {
   sendToSelectorQueue(mergedObj);
 
   //TODO: Think about moving to findAndDeleteExpiredPing function
-  recordsToKill.forEach((record) => sendToCreateQueue(record.userID));
+  if (recordsToKill) recordsToKill.forEach((record) => sendToCreateQueue(record.userID));
 }
 
 /**

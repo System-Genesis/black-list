@@ -22,7 +22,7 @@ const getExpiredLastPing = (date: Date): mongoose.QueryCursor<mergedObj> => {
  * @param updatedObj - The updated merged object
  */
 const updateDocument = async (updatedObj: mergedObj): Promise<void> => {
-  await mergedObjModel.findOneAndReplace({ _id: updatedObj._id }, updatedObj);
+  await mergedObjModel.findOneAndReplace({ _id: updatedObj._id }, { ...updatedObj, updatedAt: new Date() });
 };
 
 // const deleteOne = async (_id: string) => {
@@ -30,3 +30,4 @@ const updateDocument = async (updatedObj: mergedObj): Promise<void> => {
 // };
 
 export default { getExpiredLastPing, updateDocument };
+
